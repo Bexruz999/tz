@@ -26,6 +26,8 @@ $routes->add('home', new Route('/', ['_controller' => 'HomeController@index'])->
 
 $routes->add('category.show', new Route('/category/{id}', ['_controller' => 'CategoryController@show'])->setMethods(['GET']));
 
+$routes->add('article.show', new Route('/article/{id}', ['_controller' => 'ArticleController@show'])->setMethods(['GET']));
+
 /* Routes end */
 
 $request = Request::createFromGlobals();

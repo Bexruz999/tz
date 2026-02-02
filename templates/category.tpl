@@ -46,16 +46,11 @@
                         {if $article@index % 2 === 0}
                             <div class="project__item cus__mb60" data-aos="fade-up"
                                  data-aos-duration="1000">
-                                <a href="{$article.image}" class="thumb mb-30 imgc">
-                                    <img src="{$article.image}" alt="img">
-                                </a>
+                                <img src="{$article.image}" alt="img">
                                 <div class="content d-flex align-items-center justify-content-between gap-2">
-                                    <a href="protfolio.html" class="left__cont">
+                                    <a href="/article/{$article.id}" class="left__cont">
                                         <span class="base mb-2 mb-xxl-3 d-block text-uppercase">{$article.created_at|date_format:"%b %e, %Y"} | <i class="bi bi-eye"></i> {$article.views}</span>
                                         <h3>{$article.title}</h3>
-                                    </a>
-                                    <a href="/assets/img/project/pro1.png" class="common__icon imgc">
-                                        <i class="bi bi-arrow-up-right"></i>
                                     </a>
                                 </div>
                             </div>
@@ -69,16 +64,11 @@
                         {if $article@index % 2 != 0}
                             <div class="project__item cus__mb60" data-aos="fade-up"
                                  data-aos-duration="2200">
-                                <a href="assets/img/project/pro2.png" class="thumb mb-30 imgc">
-                                    <img src="{$article.image}" alt="img">
-                                </a>
+                                <img src="{$article.image}" alt="img">
                                 <div class="content d-flex align-items-center justify-content-between gap-2">
-                                    <a href="protfolio.html" class="left__cont">
+                                    <a href="/article/{$article.id}" class="left__cont">
                                         <span class="base mb-2 mb-xxl-3 d-block text-uppercase">{$article.created_at|date_format:"%b %e, %Y"} | <i class="bi bi-eye"></i> {$article.views}</span>
                                         <h3>{$article.title}</h3>
-                                    </a>
-                                    <a href="/assets/img/project/pro2.png" class="common__icon imgc">
-                                        <i class="bi bi-arrow-up-right"></i>
                                     </a>
                                 </div>
                             </div>
@@ -88,7 +78,8 @@
             </div>
         </div>
         {if $category.total_pages > 1}
-            {assign var="range" value=2}
+            {assign var="range" value=4}
+            {assign var="limit" value=2}
             <div class="pagination__box cmn__bg">
                 <ul class="pagi">
                     {if $current_page > 1}
@@ -97,32 +88,38 @@
                                 <i class="bi bi-chevron-left"></i>
                             </a>
                         </li>
-                        {if $current_page - 2 > 0}
-                            <li>
-                                <a href="?id={$category.id}&sort={$current_sort}&page={$current_page - 2}">{$current_page - 2}</a>
-                            </li>
-                        {/if}
-                    {else}
+                    {/if}
+
+                    {if $current_page > ($limit + 1)}
                         <li>
-                            <a href="?id={$category.id}&sort={$current_sort}&page={$current_page}">{$current_page}</a>
+                            <a href="?id={$category.id}&sort={$current_sort}&page={$current_page - 1}">1</a>
+                        </li>
+                        {if $current_page > ($limit + 2)}<li class="dots">...</li>{/if}
+                    {/if}
+
+                    {assign var="start" value=$current_page - $limit}
+                    {assign var="end" value=$current_page + $limit}
+
+                    {if $start < 1} {assign var="start" value=1} {/if}
+                    {if $end > $category.total_pages} {assign var="end" value=$category.total_pages} {/if}
+
+                    {for $p=$start to $end}
+                        <li><a href="?id={$category.id}&sort={$current_sort}&page={$p}">{$p}</a></li>
+                    {/for}
+
+                    {if $current_page < ($category.total_pages - $limit)}
+                        {if $current_page < ($category.total_pages - $limit - 1)}<span class="dots">...</span>{/if}
+                        <li>
+                            <a href="?id={$category.id}&sort={$current_sort}&page={$category.total_pages}">{$category.total_pages}</a>
                         </li>
                     {/if}
 
-                    {for $p=1 to $category.total_pages}
-                        {if $p > 1 && $p < $category.total_pages}
-                            {if $p >= ($current_page - $range) && $p <= ($current_page + $range)}
-                                <li>
-                                    <a href="?id={$category.id}&sort={$current_sort}&page={$p}">{$p}</a>
-                                </li>
-                            {/if}
-                        {/if}
-                    {/for}
-
-                    {if $category.total_pages > 1}
+                    {if $current_page < $category.total_pages}
                         <li>
                             <a href="?id={$category.id}&sort={$current_sort}&page={$current_page + 1}"><i class="bi bi-chevron-right"></i></a>
                         </li>
                     {/if}
+
                 </ul>
             </div>
         {/if}

@@ -51,7 +51,7 @@
                                             <div class="cont">
                                             <span class="dates">{$article.created_at|date_format:"%b %e, %Y"}</span>
                                                 <h3>
-                                                    <a href="blog.html">{$article.title}</a>
+                                                    <a href="/article/{$article.id}">{$article.title}</a>
                                                 </h3>
                                             </div>
                                         </div>
@@ -59,9 +59,6 @@
                                             <img src="{$article.image}" alt="img-opa">
                                         </a>
                                     </div>
-                                    <a href="{$article.image}" class="common__icon imgc">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
                                 </div>
                             {/foreach}
                         </div>
